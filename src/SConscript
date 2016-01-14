@@ -1,0 +1,21 @@
+Import( 'env' )
+
+common_srcs = list()
+common_srcs.extend( env.Glob( 'util/*.d' ) )
+
+crc32_srcs = list()
+crc32_srcs.append( env.File( 'bin/crc32.d' ) )
+
+crc32tag_srcs = list()
+crc32tag_srcs.append( env.File( 'bin/crc32tag.d' ) )
+
+crc32_bin = env.Program( 'bin/crc32', common_srcs + crc32_srcs )
+crc32tag_bin = env.Program( 'bin/crc32tag', common_srcs + crc32tag_srcs )
+
+prefix = ARGUMENTS.get( 'prefix', '/usr/local' )
+installed_crc32 = env.Install( prefix + '/bin', crc32_bin )
+installed_crc32tag = env.Install( prefix + '/bin', crc32tag_bin )
+env.Alias( 'install', [ installed_crc32, installed_crc32tag ] )
+
+Default( crc32_bin )
+Default( crc32tag_bin )
